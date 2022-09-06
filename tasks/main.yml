@@ -47,7 +47,7 @@
   ansible.posix.firewalld:
     service: ldap
     state: enabled
-    immediate: yes
+    immediate: true
     permanent: true
   when: ansible_os_family == 'RedHat'
 
