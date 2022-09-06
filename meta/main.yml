@@ -1,0 +1,27 @@
+galaxy_info:
+  author: babafou
+  description: Install OpenLDAP from Symas repository
+  company: Hybrix
+
+  license: BSD-2-Clause
+
+  min_ansible_version: '2.10'
+
+  platforms:
+    - name: EL
+      versions:
+        - '7'
+        - '8'
+    - name: Debian
+      versions:
+        - buster
+        - bullseye
+    - name: Ubuntu
+      versions:
+        - focal
+        - jammy
+
+  galaxy_tags:
+    - ldap
+    - openldap
+    - slapd

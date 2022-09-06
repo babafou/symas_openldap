@@ -1,0 +1,66 @@
+---
+
+- name: check requested OpenLDAP version
+  ansible.builtin.assert:
+    that: symas_openldap_version in {{ symas_openldap_versions }}
+    success_msg: >-
+      OpenLDAP version to install: {{ symas_openldap_version }}.
+    fail_msg: >-
+      The symas_openldap_version variable (whose value is
+      {{ symas_openldap_version }}) can only have one of the following values:
+      {{ symas_openldap_versions }}.
+
+- name: check system
+  ansible.builtin.assert:
+    that: ( ansible_os_family == 'RedHat' and
+            ansible_distribution_major_version in ( '7' , '8' ) ) or
+          ( ansible_distribution == 'Debian' and
+            ansible_distribution_major_version in ( '10' , '11' ) ) or
+          ( ansible_distribution == 'Ubuntu' and
+            ansible_distribution_version in ( '18.04' , '20.04' ) )
+    success_msg: >-
+      Ready to install OpenLDAP on {{ ansible_distribution }}
+      {{ ansible_distribution_version }}.
+    fail_msg: >-
+      Your {{ ansible_distribution }} distribution version
+      {{ ansible_distribution_version }} is not supported by this role.
+
+- name: system-specific variables
+  ansible.builtin.include_vars: "{{ ansible_os_family }}.yml"
+
+- name: system-specific repository setup
+  ansible.builtin.include_tasks: "repository-{{ ansible_os_family }}.yml"
+
+- name: install OpenLDAP
+  ansible.builtin.import_tasks: install.yml
+
+- name: handle {{ symas_openldap_slapd_ldif_default }}
+  ansible.builtin.import_tasks: slapd.ldif.default.yml
+
+- name: system-specific group and user setup
+  ansible.builtin.include_tasks: "group-user-{{ ansible_os_family }}.yml"
+
+- name: create and populate {{ symas_openldap_slapd_d }}
+  ansible.builtin.import_tasks: slapd.d.yml
+
+- name: firewalld
+  ansible.posix.firewalld:
+    service: ldap
+    state: enabled
+    immediate: yes
+    permanent: true
+  when: ansible_os_family == 'RedHat'
+
+- name: /etc/default/symas-openldap
+  ansible.builtin.template:
+    src: symas-openldap.j2
+    dest: /etc/default/symas-openldap
+    owner: root
+    group: root
+    mode: 0444
+
+- name: slapd
+  ansible.builtin.service:
+    name: slapd
+    state: started
+    enabled: true

@@ -1,0 +1,31 @@
+---
+
+# list of OpenLDAP supported versions
+symas_openldap_versions: [ 25 , 26 ] # noqa yaml
+
+# OpenLDAP version to install
+symas_openldap_version: 25
+
+# etc directory
+symas_openldap_etc_openldap: /opt/symas/etc/openldap
+
+# LDIF file used to create slapd.d directory
+symas_openldap_slapd_ldif_default: "{{ symas_openldap_etc_openldap }}/slapd.ldif.default"
+
+# slapd.d directory
+symas_openldap_slapd_d: "{{ symas_openldap_etc_openldap }}/slapd.d"
+
+# additional schemas
+symas_openldap_schemas:
+  - cosine
+  - inetorgperson
+
+# database customization
+symas_openldap_mdb:
+  - attribute: olcSuffix
+    value: dc=example,dc=com
+  - attribute: olcRootDN
+    value: cn=Manager,dc=example,dc=com
+    regexp: cn=Manager
+  - attribute: olcRootPW
+    value: '{SSHA}RjrNeAV06wW80pywa0dIuBEPuvZv8kEc'

@@ -1,0 +1,22 @@
+---
+
+- name: gpg is needed by ansible.builtin.apt_key
+  ansible.builtin.apt:
+    name: gpg
+
+- name: APT key
+  ansible.builtin.apt_key:
+    keyserver: keyserver.ubuntu.com
+    id: DA26A148887DCBEB
+
+- name: Symas repository setup
+  ansible.builtin.get_url:
+    url: https://repo.symas.com/configs/SOLDAP/{{ symas_openldap_initial[ansible_distribution] }}{{ ansible_distribution_major_version }}/release{{ symas_openldap_version }}.list
+    dest: /etc/apt/sources.list.d/soldap-release{{ symas_openldap_version }}.list
+    owner: root
+    group: root
+    mode: 0444
+
+- name: update APT cache
+  ansible.builtin.apt:
+    update_cache: true

@@ -1,0 +1,9 @@
+---
+
+- name: Symas repository setup
+  ansible.builtin.get_url:
+    url: https://repo.symas.com/configs/SOLDAP/rhel{{ ansible_distribution_major_version }}/release{{ symas_openldap_version }}.repo
+    dest: /etc/yum.repos.d/soldap-release{{ symas_openldap_version }}.repo
+    owner: root
+    group: root
+    mode: 0444

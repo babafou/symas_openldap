@@ -1,0 +1,33 @@
+---
+
+- name: uncomment cn=module,cn=config
+  ansible.builtin.replace:
+    path: "{{ symas_openldap_slapd_ldif_default }}"
+    regexp: '^#({{ item }})$'
+    replace: '\1'
+  loop:
+    - 'dn: cn=module,cn=config'
+    - 'objectClass: olcModuleList'
+    - 'cn: module'
+    - "olcModulepath:\t/opt/symas/lib/openldap" # noqa no-tabs
+    - "olcModuleload:\tback_mdb.la" # noqa no-tabs
+
+- name: add schemas
+  ansible.builtin.lineinfile:
+    path: "{{ symas_openldap_slapd_ldif_default }}"
+    line: 'include: file:///opt/symas/etc/openldap/schema/{{ item }}.ldif'
+    insertafter: '^include'
+  loop: "{{ symas_openldap_schemas }}"
+
+- name: olcDatabase=config,cn=config
+  ansible.builtin.blockinfile:
+    path: "{{ symas_openldap_slapd_ldif_default }}"
+    block: "{{ '\n' + lookup ( 'file' , 'block-config.ldif' ) + '\n\n' }}"
+    insertafter: '^# rootdn can always read and write EVERYTHING!$'
+
+- name: customize olcDatabase=mdb,cn=config
+  ansible.builtin.lineinfile:
+    path: "{{ symas_openldap_slapd_ldif_default }}"
+    line: "{{ item.attribute }}: {{ item.value }}"
+    regexp: '^{{ item.attribute }}: {{ item.regexp | default ( ) }}'
+  loop: "{{ symas_openldap_mdb }}"

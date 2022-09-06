@@ -1,0 +1,15 @@
+---
+
+- name: "{{ symas_openldap_group }} group"
+  ansible.builtin.group:
+    name: "{{ symas_openldap_group }}"
+    system: true
+
+- name: "{{ symas_openldap_user }} user"
+  ansible.builtin.user:
+    name: "{{ symas_openldap_user }}"
+    group: "{{ symas_openldap_group }}"
+    comment: OpenLDAP Server Account
+    home: /var/symas/openldap-data
+    shell: /bin/false
+    system: true

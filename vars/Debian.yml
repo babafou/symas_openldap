@@ -1,0 +1,12 @@
+---
+
+symas_openldap_initial:
+  Debian: d
+  Ubuntu: u
+
+symas_openldap_packages:
+  - symas-openldap-clients
+  - symas-openldap-server
+
+symas_openldap_user: openldap
+symas_openldap_group: openldap
