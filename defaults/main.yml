@@ -29,3 +29,19 @@ symas_openldap_mdb:
     regexp: cn=Manager
   - attribute: olcRootPW
     value: '{SSHA}RjrNeAV06wW80pywa0dIuBEPuvZv8kEc'
+
+# attributes to index with eq
+symas_openldap_index_eq:
+  - uid
+  - uidNumber
+  - gidNumber
+  - member
+  - uniqueMember
+
+# attributes to index with eq,sub
+symas_openldap_index_eq_sub:
+  - cn
+  - sn
+  - givenName
+  - mail
+  - ou

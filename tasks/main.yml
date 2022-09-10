@@ -28,6 +28,9 @@
 - name: system-specific variables
   ansible.builtin.include_vars: "{{ ansible_os_family }}.yml"
 
+- name: system-specific group and user setup
+  ansible.builtin.include_tasks: "group-user-{{ ansible_os_family }}.yml"
+
 - name: system-specific repository setup
   ansible.builtin.include_tasks: "repository-{{ ansible_os_family }}.yml"
 
@@ -36,9 +39,6 @@
 
 - name: handle {{ symas_openldap_slapd_ldif_default }}
   ansible.builtin.import_tasks: slapd.ldif.default.yml
-
-- name: system-specific group and user setup
-  ansible.builtin.include_tasks: "group-user-{{ ansible_os_family }}.yml"
 
 - name: create and populate {{ symas_openldap_slapd_d }}
   ansible.builtin.import_tasks: slapd.d.yml

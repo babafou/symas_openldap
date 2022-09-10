@@ -31,3 +31,15 @@
     line: "{{ item.attribute }}: {{ item.value }}"
     regexp: '^{{ item.attribute }}: {{ item.regexp | default ( ) }}'
   loop: "{{ symas_openldap_mdb }}"
+
+- name: attributes to index with eq
+  ansible.builtin.lineinfile:
+    path: "{{ symas_openldap_slapd_ldif_default }}"
+    line: "olcDbIndex: {{ symas_openldap_index_eq | join ( ',' ) }} eq"
+    insertafter: '^olcDbIndex: objectClass eq'
+
+- name: attributes to index with eq,sub
+  ansible.builtin.lineinfile:
+    path: "{{ symas_openldap_slapd_ldif_default }}"
+    line: "olcDbIndex: {{ symas_openldap_index_eq_sub | join ( ',' ) }} eq,sub"
+    insertafter: '^olcDbIndex'
