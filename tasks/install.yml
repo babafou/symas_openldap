@@ -5,7 +5,7 @@
     name: "{{ symas_openldap_packages }}"
     state: present
 
-- name: set owner and group on /var/symas subdirectories
+- name: Set owner and group on /var/symas subdirectories
   ansible.builtin.file:
     path: "{{ item }}"
     owner: "{{ symas_openldap_user }}"

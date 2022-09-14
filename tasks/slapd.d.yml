@@ -12,12 +12,12 @@
 # NOTE setype seems to be ignored on distributions not using SELinux so don't
 # bother handling this specifically.
 
-- name: slapadd
+- name: Run slapadd to populate {{ symas_openldap_slapd_d }}
   ansible.builtin.command:
     cmd: /opt/symas/sbin/slapadd -F "{{ symas_openldap_slapd_d }}" -l "{{ symas_openldap_slapd_ldif_default }}" -n 0
     creates: "{{ symas_openldap_slapd_d }}/cn=config.ldif"
 
-- name: set owner and group on files below {{ symas_openldap_slapd_d }}
+- name: Set owner and group on files below {{ symas_openldap_slapd_d }}
   ansible.builtin.file:
     path: "{{ symas_openldap_slapd_d }}"
     owner: "{{ symas_openldap_user }}"

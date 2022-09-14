@@ -1,6 +1,6 @@
 ---
 
-- name: gpg is needed by ansible.builtin.apt_key
+- name: Ensure gpg is installed, because it's used by ansible.builtin.apt_key
   ansible.builtin.apt:
     name: gpg
 
@@ -17,6 +17,6 @@
     group: root
     mode: 0444
 
-- name: update APT cache
+- name: Update APT cache
   ansible.builtin.apt:
     update_cache: true

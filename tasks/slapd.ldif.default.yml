@@ -1,6 +1,6 @@
 ---
 
-- name: uncomment cn=module,cn=config
+- name: Uncomment cn=module,cn=config
   ansible.builtin.replace:
     path: "{{ symas_openldap_slapd_ldif_default }}"
     regexp: '^#({{ item }})$'
@@ -12,34 +12,34 @@
     - "olcModulepath:\t/opt/symas/lib/openldap" # noqa no-tabs
     - "olcModuleload:\tback_mdb.la" # noqa no-tabs
 
-- name: add schemas
+- name: Add schemas
   ansible.builtin.lineinfile:
     path: "{{ symas_openldap_slapd_ldif_default }}"
     line: 'include: file:///opt/symas/etc/openldap/schema/{{ item }}.ldif'
     insertafter: '^include'
   loop: "{{ symas_openldap_schemas }}"
 
-- name: olcDatabase=config,cn=config
+- name: Add block for olcDatabase=config,cn=config
   ansible.builtin.blockinfile:
     path: "{{ symas_openldap_slapd_ldif_default }}"
     block: "{{ '\n' + lookup ( 'file' , 'block-config.ldif' ) + '\n\n' }}"
     insertafter: '^# rootdn can always read and write EVERYTHING!$'
 
-- name: customize olcDatabase=mdb,cn=config
+- name: Customize olcDatabase=mdb,cn=config
   ansible.builtin.lineinfile:
     path: "{{ symas_openldap_slapd_ldif_default }}"
     line: "{{ item.attribute }}: {{ item.value }}"
-    regexp: '^{{ item.attribute }}: {{ item.regexp | default ( ) }}'
+    regexp: '^{{ item.attribute }}: {{ item.regexp | default() }}'
   loop: "{{ symas_openldap_mdb }}"
 
-- name: attributes to index with eq
+- name: Attributes to index with eq
   ansible.builtin.lineinfile:
     path: "{{ symas_openldap_slapd_ldif_default }}"
-    line: "olcDbIndex: {{ symas_openldap_index_eq | join ( ',' ) }} eq"
+    line: "olcDbIndex: {{ symas_openldap_index_eq | join(',') }} eq"
     insertafter: '^olcDbIndex: objectClass eq'
 
-- name: attributes to index with eq,sub
+- name: Attributes to index with eq,sub
   ansible.builtin.lineinfile:
     path: "{{ symas_openldap_slapd_ldif_default }}"
-    line: "olcDbIndex: {{ symas_openldap_index_eq_sub | join ( ',' ) }} eq,sub"
+    line: "olcDbIndex: {{ symas_openldap_index_eq_sub | join(',') }} eq,sub"
     insertafter: '^olcDbIndex'

@@ -1,6 +1,6 @@
 ---
 
-- name: check requested OpenLDAP version
+- name: Check requested OpenLDAP version
   ansible.builtin.assert:
     that: symas_openldap_version in {{ symas_openldap_versions }}
     success_msg: >-
@@ -10,7 +10,7 @@
       {{ symas_openldap_version }}) can only have one of the following values:
       {{ symas_openldap_versions }}.
 
-- name: check system
+- name: Check system
   ansible.builtin.assert:
     that: ( ansible_os_family == 'RedHat' and
             ansible_distribution_major_version in ( '7' , '8' ) ) or
@@ -25,25 +25,25 @@
       Your {{ ansible_distribution }} distribution version
       {{ ansible_distribution_version }} is not supported by this role.
 
-- name: system-specific variables
+- name: System-specific variables
   ansible.builtin.include_vars: "{{ ansible_os_family }}.yml"
 
-- name: system-specific group and user setup
+- name: System-specific group and user setup
   ansible.builtin.include_tasks: "group-user-{{ ansible_os_family }}.yml"
 
-- name: system-specific repository setup
+- name: System-specific repository setup
   ansible.builtin.include_tasks: "repository-{{ ansible_os_family }}.yml"
 
-- name: install OpenLDAP
+- name: Install OpenLDAP
   ansible.builtin.import_tasks: install.yml
 
-- name: handle {{ symas_openldap_slapd_ldif_default }}
+- name: Handle {{ symas_openldap_slapd_ldif_default }}
   ansible.builtin.import_tasks: slapd.ldif.default.yml
 
-- name: create and populate {{ symas_openldap_slapd_d }}
+- name: Create and populate {{ symas_openldap_slapd_d }}
   ansible.builtin.import_tasks: slapd.d.yml
 
-- name: firewalld
+- name: Add ldap service in firewalld
   ansible.posix.firewalld:
     service: ldap
     state: enabled
@@ -59,7 +59,7 @@
     group: root
     mode: 0444
 
-- name: slapd
+- name: Start and enable slapd service
   ansible.builtin.service:
     name: slapd
     state: started
