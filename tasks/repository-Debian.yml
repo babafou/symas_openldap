@@ -16,6 +16,17 @@
     owner: root
     group: root
     mode: 0444
+  when: ansible_distribution != 'Ubuntu' or ansible_distribution_version != '22.04'
+
+- name: Symas repository setup
+  ansible.builtin.copy:
+    content: "deb [arch=amd64] https://repo.symas.com/repo/deb/main/release25 jammy main\n"
+# echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/symas-key.asc] https://repo.symas.com/repo/deb/main/release25 jammy main'
+    dest: /etc/apt/sources.list.d/soldap-release{{ symas_openldap_version }}.list
+    owner: root
+    group: root
+    mode: 0444
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_version == '22.04'
 
 - name: Update APT cache
   ansible.builtin.apt:
