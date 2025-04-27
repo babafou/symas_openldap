@@ -1,0 +1,8 @@
+---
+
+symas_openldap_packages:
+  - symas-openldap-clients
+  - symas-openldap-servers
+
+symas_openldap_user: ldap
+symas_openldap_group: ldap

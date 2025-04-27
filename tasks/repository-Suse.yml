@@ -1,0 +1,6 @@
+---
+
+- name: Symas repository setup
+  community.general.zypper_repository:
+    repo: https://repo.symas.com/configs/SOLDAP/sles153/release{{ symas_openldap_version }}.repo
+    auto_import_keys: true
