@@ -9,8 +9,8 @@
     - 'dn: cn=module,cn=config'
     - 'objectClass: olcModuleList'
     - 'cn: module'
-    - "olcModulepath:\t/opt/symas/lib/openldap" # noqa no-tabs
-    - "olcModuleload:\tback_mdb.la" # noqa no-tabs
+    - "olcModulepath:\t/opt/symas/lib/openldap" # noqa: no-tabs
+    - "olcModuleload:\tback_mdb.la" # noqa: no-tabs
 
 - name: Add schemas
   ansible.builtin.lineinfile:

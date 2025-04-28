@@ -1,7 +1,7 @@
 ---
 
 # list of OpenLDAP supported versions
-symas_openldap_versions: [ 25, 26 ] # noqa yaml
+symas_openldap_versions: [ 25 , 26 ] # noqa: yaml[brackets] yaml[commas]
 
 # OpenLDAP version to install
 symas_openldap_version: 25

@@ -1,12 +1,12 @@
 ---
 
-- name: "{{ symas_openldap_group }} group"
+- name: Group {{ symas_openldap_group }}
   ansible.builtin.group:
     name: "{{ symas_openldap_group }}"
     gid: 55
     system: true
 
-- name: "{{ symas_openldap_user }} user"
+- name: User {{ symas_openldap_user }}
   ansible.builtin.user:
     name: "{{ symas_openldap_user }}"
     uid: 55

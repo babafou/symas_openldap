@@ -11,11 +11,11 @@
 
 - name: Symas repository setup
   ansible.builtin.get_url:
-    url: https://repo.symas.com/configs/SOLDAP/{{ symas_openldap_initial[ansible_distribution] }}{{ ansible_distribution_major_version }}/release{{ symas_openldap_version }}.list
+    url: https://repo.symas.com/configs/SOLDAP/{{ symas_openldap_initial[ansible_distribution] }}{{ ansible_distribution_major_version }}/release{{ symas_openldap_version }}.list # noqa: yaml[line-length]
     dest: /etc/apt/sources.list.d/soldap-release{{ symas_openldap_version }}.list
     owner: root
     group: root
-    mode: 0444
+    mode: '444'
   when: ansible_distribution != 'Ubuntu' or ansible_distribution_version != '22.04'
 
 - name: Symas repository setup
@@ -25,7 +25,7 @@
     dest: /etc/apt/sources.list.d/soldap-release{{ symas_openldap_version }}.list
     owner: root
     group: root
-    mode: 0444
+    mode: '444'
   when: ansible_distribution == 'Ubuntu' and ansible_distribution_version == '22.04'
 
 - name: Update APT cache

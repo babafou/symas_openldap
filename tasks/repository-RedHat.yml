@@ -6,4 +6,4 @@
     dest: /etc/yum.repos.d/soldap-release{{ symas_openldap_version }}.repo
     owner: root
     group: root
-    mode: 0444
+    mode: '444'

@@ -1,12 +1,12 @@
 ---
 
-- name: "{{ symas_openldap_slapd_d }} directory"
+- name: Directory {{ symas_openldap_slapd_d }}
   ansible.builtin.file:
     path: "{{ symas_openldap_slapd_d }}"
     state: directory
     owner: "{{ symas_openldap_user }}"
     group: "{{ symas_openldap_group }}"
-    mode: 0700
+    mode: '700'
     setype: slapd_db_t
 
 # NOTE setype seems to be ignored on distributions not using SELinux so don't
